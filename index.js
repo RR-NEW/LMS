@@ -3,7 +3,7 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 import express from "express";
 import mongoose from "mongoose";
-import Users from "./database/models/users.js";
+import Users from "./database/models/user.js";
 
 const app = express();
 const PORT =1001;
@@ -38,7 +38,7 @@ app.get("/users", async  (req, res) => {
     });
 });
 app.post("/users",async (req, res)=> {
-    const formdata= req.body;
+    const formData= req.body;
     const newuser = await User.create(formData);
 
     return res.json({
@@ -49,5 +49,5 @@ app.post("/users",async (req, res)=> {
     });
 });
 app.listen(PORT, () => {
-    console.log(`Serever is on port ${PORT}`);
+    console.log(`Server is on port ${PORT}`);
 });
