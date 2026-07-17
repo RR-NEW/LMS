@@ -9,12 +9,12 @@ const app = express();
 const PORT =1001;
 app.use(express.json());
 
-const mongoUri="mongodb+srv://<db_username>:qdMW2eBZUPiH90MD@lead.izrjkec.mongodb.net/";
+const mongoUri="mongodb+srv://mangooestry_db_user:qdMW2eBZUPiH90MD@mangooestry_db_user.izrjkec.mongodb.net/?appName=Lead";
 
 async function connectToDb()
 {
     try{
-        await mangoose.connect(mongoUri);
+        await mongoose.connect(mongoUri);
         console.log("connected");
     }
     catch(error){
@@ -38,7 +38,7 @@ app.get("/users", async  (req, res) => {
     });
 });
 app.post("/users",async (req, res)=> {
-    const formdata= req.body;
+    const formData= req.body;
     const newuser = await User.create(formData);
 
     return res.json({
@@ -49,5 +49,5 @@ app.post("/users",async (req, res)=> {
     });
 });
 app.listen(PORT, () => {
-    console.log(`Serever is on port ${PORT}`);
+    console.log(`Server is on port ${PORT}`);
 });
