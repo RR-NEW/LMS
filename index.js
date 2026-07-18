@@ -2,9 +2,12 @@ import dns from "dns";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
+import "dotenv/config";
+
 import express from "express";
 import mongoose from "mongoose";
 import Users from "./database/models/user.js";
+
 
 const app = express();
 const PORT =1001;
@@ -31,7 +34,7 @@ app.get("/", (req, res)=>{
 });
 
 app.get("/users", async  (req, res) => {
-    const allUsers= await User.find();
+    const allUsers= await Users.find();
 
     return res.json({
         status:"success",
@@ -40,7 +43,7 @@ app.get("/users", async  (req, res) => {
 });
 app.post("/users",async (req, res)=> {
     const formData= req.body;
-    const newuser = await User.create(formData);
+    const newuser = await Users.create(formData);
 
     return res.json({
         status: "success",
