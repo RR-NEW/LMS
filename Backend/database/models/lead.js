@@ -2,10 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const leadSchema = new Schema(
   {
-   businessName:String,
-   location:String,
-   status:String,
-   notes:String,
+    businessName: String,
+    location: String,
+    status: String,
+    demoDate: Date,
+    followupDate: Date,
+    notes: String,
   },
   { timestamps: true },
 );

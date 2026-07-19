@@ -7,10 +7,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 
-import Users from "../Backend/database/models/user.js";
-import Lead from "../Backend/database/models/lead.js";
-import Services from  "../Backend/database/models/services.js"
-import  Contact from "../Backend/database/models/contact.js"
+import Users from "./database/models/user.js";
+import Lead from "./database/models/lead.js";
+import Services from  "./database/models/services.js";
+import  Contact from "./database/models/contact.js";
 
 const app = express();
 const PORT = 1001;
@@ -96,6 +96,42 @@ app.post("/users", async (req, res) => {
         status: "success",
         user: newuser,
     });
+});
+// POST LOGIN
+app.post("/api/login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        // Find the user by username
+        const user = await Users.findOne({ username });
+
+        // If user doesn't exist
+        if (!user) {
+            return res.status(401).json({ 
+                status: "error", 
+                message: "Invalid username or password" 
+            });
+        }
+
+        // Check password (Note: In your schema, it's called 'passwordHash'. 
+        // In a real app, you should use bcrypt to compare hashes, but for this basic setup we compare directly)
+        if (user.passwordHash !== password) {
+             return res.status(401).json({ 
+                 status: "error", 
+                 message: "Invalid username or password" 
+             });
+        }
+
+        // Successful login
+        return res.json({ 
+            status: "success", 
+            message: "Login successful",
+            user: { username: user.username, fullname: user.fullname }
+        });
+
+    } catch (error) {
+        return res.status(500).json({ status: "error", message: error.message });
+    }
 });
 
 app.listen(PORT, () => {
