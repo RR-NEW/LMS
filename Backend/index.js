@@ -7,10 +7,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 
-import Users from "../database/models/user.js";
-import Lead from "../database/models/lead.js";
-import Services from  "../database/models/services.js";
-import  Contact from "../database/models/contact.js";
+import Users from "../Backend/database/models/user.js";
+import Lead from "../Backend/database/models/lead.js";
+import Services from  "../Backend/database/models/services.js"
+import  Contact from "../Backend/database/models/contact.js"
 
 const app = express();
 const PORT = 1001;
