@@ -1,0 +1,158 @@
+:root {
+  --bg-main: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-main: #212529;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --primary: #4f46e5;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --input-bg: #ffffff;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --primary: #6366f1;
+  --input-bg: #1e293b;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  padding: 2rem 1.5rem;
+  transition: background 0.25s ease, color 0.25s ease;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Layout System */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-title { margin: 0; font-size: 2rem; font-weight: 700; letter-spacing: -0.025em; }
+.subtitle { margin: 0.35rem 0 0 0; color: var(--text-muted); font-size: 1rem; }
+
+/* Interactive Widgets Components */
+button {
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button:hover { opacity: 0.95; transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+
+.btn-success { background-color: var(--success); color: white; }
+.btn-toggle { background-color: var(--border-color); color: var(--text-main); }
+
+/* Dashboard Analytic Widgets Counters Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.metric-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+.metric-value { font-size: 2.25rem; font-weight: 700; margin: 0.25rem 0 0 0; color: var(--text-main); }
+
+/* Data Collection Creation Forms Card Layouts */
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.75rem;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.form-title { margin: 0 0 1.25rem 0; font-size: 1.25rem; font-weight: 600; }
+.form-grid { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; }
+.form-group { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 0.5rem; }
+label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+
+input, select {
+  background: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input:focus, select:focus { border-color: var(--primary); }
+
+/* Data Display Infrastructure Component Architecture */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  -webkit-overflow-scrolling: touch;
+}
+
+table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
+th, td { padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+th { background-color: rgba(0, 0, 0, 0.015); font-weight: 600; color: var(--text-muted); font-size: 0.875rem; }
+tr:last-child td { border-bottom: none; }
+tr { transition: background-color 0.15s ease; }
+tr:hover { background-color: rgba(0, 0, 0, 0.01); }
+
+/* Specialized Visual Badge Items Elements */
+.entity-title { font-weight: 600; color: var(--text-main); }
+.entity-subtext { font-size: 0.775rem; color: var(--text-muted); margin-top: 0.2rem; }
+.log-annotation-box { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.925rem; }
+.none-text { color: var(--text-muted); font-style: italic; font-size: 0.85rem; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-new { background-color: rgba(79, 70, 229, 0.1); color: var(--primary); }
+.status-contacted { background-color: rgba(245, 158, 11, 0.1); color: var(--warning); }
+.status-fallback { background-color: rgba(108, 117, 125, 0.15); color: var(--text-muted); }
+.status-sold { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
+
+.table-select { padding: 0.4rem 0.6rem; font-size: 0.875rem; cursor: pointer; }
