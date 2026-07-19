@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS Enterprise Panel</title>
+  <link rel="stylesheet" href="dash.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div>
+        <h1 class="main-title">Lead Management System</h1>
+        <p class="subtitle">Operational Enterprise Analytics Dashboard</p>
+      </div>
+      <button class="btn-toggle" onclick="toggleTheme()">D/L </button>
+    </header>
+
+    <main>
+      <!-- Metrics Analytics Indicators Row Block -->
+      <section class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Total Document Pipeline</div>
+          <div class="metric-value" id="metric-total">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Active Encounters</div>
+          <div class="metric-value" id="metric-active">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Closed Conversions (Sold)</div>
+          <div class="metric-value" id="metric-sold">0</div>
+        </div>
+      </section>
+
+      <!-- Inbound Lead Recording Interface Form Module Card -->
+      <section class="form-card">
+        <h3 class="form-title">Record Pipeline Resource Instance</h3>
+        <form id="lead-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="businessName">Corporate Entity Name / Account</label>
+              <input type="text" id="businessName" placeholder="e.g. Acme Corporation" required>
+            </div>
+            <div class="form-group">
+              <label for="location">Geographic Operations Center</label>
+              <input type="text" id="location" placeholder="e.g. London, UK" required>
+            </div>
+            <div class="form-group">
+              <label for="notes">Timeline Log Summary / Notes</label>
+              <input type="text" id="notes" placeholder="Enter initial engagement log text...">
+            </div>
+            <button type="submit" class="btn-success">Commit Record</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Main Document Stream Pipeline Display Datagrid -->
+      <section>
+        <h3 class="form-title">Live Pipeline Instances</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Corporate Account Identity</th>
+                <th>Regional Scope</th>
+                <th>Pipeline Badge</th>
+                <th>Status State Controls</th>
+                <th>Activity Audit Logs</th>
+              </tr>
+            </thead>
+            <tbody id="leads-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                  Synchronizing interface views with Mongoose clusters...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="dash.js"></script>
+</body>
+</html>
