@@ -1,57 +1,55 @@
 import dns from "dns";
-
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-import "dotenv/config";
+import "dotenv/config"; 
 
 import express from "express";
 import mongoose from "mongoose";
 import Users from "./database/models/user.js";
 
-
 const app = express();
-const PORT =1001;
+const PORT = 1001;
 app.use(express.json());
 
-const mongoUri="mongodb+srv://mangooestry_db_user:qdMW2eBZUPiH90MD@mangooestry_db_user.izrjkec.mongodb.net/?appName=Lead";
+const mongoUri = process.env.MONGO_URI;
 
-async function connectToDb()
-{
-    try{
+async function connectToDb() {
+    try {
         await mongoose.connect(mongoUri);
         console.log("connected");
     }
-    catch(error){
+    catch(error) {
         console.log("Error in mongoose connection :\n", error);
     }
 }
 
-connectToDb();
-app.get("/", (req, res)=>{
+connectToDb()
+
+app.get("/", (req, res) => {
     return res.json({
         name: "Rojit",
     });
 });
 
-app.get("/users", async  (req, res) => {
-    const allUsers= await Users.find();
+app.get("/users", async (req, res) => {
+    const allUsers = await Users.find();
 
     return res.json({
-        status:"success",
+        status: "success",
         users: allUsers,
     });
 });
-app.post("/users",async (req, res)=> {
-    const formData= req.body;
+
+app.post("/users", async (req, res) => {
+    const formData = req.body;
     const newuser = await Users.create(formData);
 
     return res.json({
         status: "success",
         user: newuser,
-    
-
     });
 });
+
 app.listen(PORT, () => {
     console.log(`Server is on port ${PORT}`);
 });
