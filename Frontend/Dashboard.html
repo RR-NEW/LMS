@@ -1,88 +1,223 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LMS Enterprise Panel</title>
-  <link rel="stylesheet" href="/Frontend/CSS/dash.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Management Dashboard</title>
+    <link rel="stylesheet" href="CSS/dash.css">
 </head>
 <body>
-
-  <div class="container">
-    <header>
-      <div>
-        <h1 class="main-title">Lead Management System</h1>
-        <p class="subtitle">Operational Enterprise Analytics Dashboard</p>
-      </div>
-      <button class="btn-toggle" onclick="toggleTheme()">D/L </button>
-    </header>
-
-    <main>
-      <!-- Metrics Analytics Indicators Row Block -->
-      <section class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-label">Total Document Pipeline</div>
-          <div class="metric-value" id="metric-total">0</div>
+    <nav class="navbar">
+        <h2>LMS Dashboard</h2>
+        <div class="user-controls">
+            <span id="welcome-message"></span>
+            <button id="logout-btn" class="btn-logout">Logout</button>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Active Encounters</div>
-          <div class="metric-value" id="metric-active">0</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Closed Conversions (Sold)</div>
-          <div class="metric-value" id="metric-sold">0</div>
-        </div>
-      </section>
+    </nav>
 
-      <!-- Inbound Lead Recording Interface Form Module Card -->
-      <section class="form-card">
-        <h3 class="form-title">Record Pipeline Resource Instance</h3>
-        <form id="lead-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="businessName">Corporate Entity Name / Account</label>
-              <input type="text" id="businessName" placeholder="e.g. Acme Corporation" required>
+    <main class="dashboard-container">
+
+        
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">📊</span>
+                <div class="stat-info">
+                    <h4 id="stat-total-leads">0</h4>
+                    <p>Total Leads</p>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="location">Geographic Operations Center</label>
-              <input type="text" id="location" placeholder="e.g. London, UK" required>
+            <div class="stat-card">
+                <span class="stat-icon">🏆</span>
+                <div class="stat-info">
+                    <h4 id="stat-won-leads">0</h4>
+                    <p>Deals Won</p>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="notes">Timeline Log Summary / Notes</label>
-              <input type="text" id="notes" placeholder="Enter initial engagement log text...">
+            <div class="stat-card">
+                <span class="stat-icon">🛠️</span>
+                <div class="stat-info">
+                    <h4 id="stat-total-services">0</h4>
+                    <p>Services</p>
+                </div>
             </div>
-            <button type="submit" class="btn-success">Commit Record</button>
-          </div>
-        </form>
-      </section>
+            <div class="stat-card">
+                <span class="stat-icon">👤</span>
+                <div class="stat-info">
+                    <h4 id="stat-total-contacts">0</h4>
+                    <p>Contacts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">💰</span>
+                <div class="stat-info">
+                    <h4 id="stat-total-revenue">$0</h4>
+                    <p>Total Value</p>
+                </div>
+            </div>
+        </section>
 
-      <!-- Main Document Stream Pipeline Display Datagrid -->
-      <section>
-        <h3 class="form-title">Live Pipeline Instances</h3>
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Corporate Account Identity</th>
-                <th>Regional Scope</th>
-                <th>Pipeline Badge</th>
-                <th>Status State Controls</th>
-                <th>Activity Audit Logs</th>
-              </tr>
-            </thead>
-            <tbody id="leads-tbody">
-              <tr>
-                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">
-                  Synchronizing interface views with Mongoose clusters...
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      
+        <div class="two-column-layout">
+
+          
+            <div class="left-column">
+
+                
+                <section class="card-section">
+                    <div class="section-header">
+                        <h3> Lead Management</h3>
+                    </div>
+                    
+                    <form id="add-lead-form" class="entry-form">
+                        <h4>➕ Add New Lead</h4>
+                        <div class="form-grid">
+                            <input type="text" id="lead-business" placeholder="Business Name *" required>
+                            <input type="text" id="lead-location" placeholder="Location" required>
+                            <select id="lead-status">
+                                <option value="New">New</option>
+                                <option value="Demo Scheduled">Demo Scheduled</option>
+                                <option value="Demo Done">Demo Done</option>
+                                <option value="Negotiation">Negotiation</option>
+                                <option value="Won">Won</option>
+                                <option value="Lost">Lost</option>
+                            </select>
+                            <div>
+                                <label>Demo Date</label>
+                                <input type="date" id="lead-demodate">
+                            </div>
+                            <div>
+                                <label>Follow-up Date</label>
+                                <input type="date" id="lead-followdate">
+                            </div>
+                            <input type="text" id="lead-notes" placeholder="Notes / Remarks">
+                        </div>
+                        <button type="submit" class="btn-save">Save Lead</button>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table id="leads-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Business Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Demo Date</th>
+                                    <th>Follow-up Date</th>
+                                    <th>Notes</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                
+                <section class="card-section">
+                    <div class="section-header">
+                        <h3> Services Provided</h3>
+                    </div>
+
+                    <form id="add-service-form" class="entry-form">
+                        <h4>➕ Add New Service</h4>
+                        <div class="form-grid">
+                            <input type="text" id="service-name" placeholder="Service Name (e.g. Web Dev)" required>
+                            <select id="service-lead-select" required>
+                                <option value="">-- Select Linked Lead (Business) --</option>
+                            </select>
+                            <input type="text" id="service-desc" placeholder="Description">
+                            <input type="number" id="service-price" placeholder="Price ($)">
+                        </div>
+                        <button type="submit" class="btn-save">Save Service</button>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table id="services-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Service Name</th>
+                                    <th>Linked Lead (Business)</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                
+                <section class="card-section">
+                    <div class="section-header">
+                        <h3> Contact Persons</h3>
+                    </div>
+
+                    <form id="add-contact-form" class="entry-form">
+                        <h4>➕ Add New Contact Person</h4>
+                        <div class="form-grid">
+                            <input type="text" id="contact-name" placeholder="Full Name *" required>
+                            <input type="text" id="contact-phone" placeholder="Phone Number *" required>
+                            <input type="text" id="contact-role" placeholder="Role (e.g. CEO, IT Manager)">
+                            <select id="contact-lead-select" required>
+                                <option value="">-- Select Linked Lead (Business) --</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-save">Save Contact Person</button>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table id="contacts-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Contact Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Role</th>
+                                    <th>Linked Lead (Business)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN: All-in-One Business Overview -->
+            <div class="right-column">
+                <section class="card-section highlight-section sticky-overview">
+                    <div class="section-header">
+                        <h3> Complete Business Overview (All-in-One View)</h3>
+                    </div>
+                    <p class="section-desc">Shows every business along with its linked services and contact persons together in one view.</p>
+
+                    <div class="table-responsive">
+                        <table id="unified-table">
+                            <thead>
+                                <tr>
+                                    <th>Business Name</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Services Offered</th>
+                                    <th>Contact Persons</th>
+                                    <th>Demo / Follow-up</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
         </div>
-      </section>
+
     </main>
-  </div>
 
-  <script src="dash.js"></script>
+    <script src="dash.js"></script>
 </body>
 </html>
