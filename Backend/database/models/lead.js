@@ -2,6 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const leadSchema = new Schema(
   {
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Tenant",
+      required: true,
+      index: true, 
+    },
     businessName: String,
     location: String,
     status: String,

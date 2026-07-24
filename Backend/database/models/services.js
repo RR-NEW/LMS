@@ -2,7 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const serviceSchema = new Schema(
   {
-    
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Tenant",
+      required: true,
+      index: true,
+    },
     serviceName: String,
     lead: {
       type: Schema.Types.ObjectId,

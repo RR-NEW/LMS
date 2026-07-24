@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (data.status === "success") {
+                // Save both token and user info
+                localStorage.setItem("lms_token", data.token);
                 localStorage.setItem("lms_user", JSON.stringify(data.user));
                 window.location.href = "Dashboard.html";
             } else {
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// === ADDED: GOOGLE SIGN-IN HANDLER ===
+// === GOOGLE SIGN-IN HANDLER ===
 async function handleGoogleLogin(response) {
     const errorMsg = document.getElementById("error-msg");
 
@@ -48,6 +50,8 @@ async function handleGoogleLogin(response) {
         const data = await res.json();
 
         if (data.status === "success") {
+            // Save both token and user info
+            localStorage.setItem("lms_token", data.token);
             localStorage.setItem("lms_user", JSON.stringify(data.user));
             window.location.href = "Dashboard.html";
         } else {
