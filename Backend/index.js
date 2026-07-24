@@ -135,9 +135,39 @@ app.get("/api/contacts", async (req, res) => {
 });
 
 
+// POST / SAVE NEW LEAD (and optional Contact Phone)
 app.post("/api/leads", async (req, res) => {
     try {
-        const newLead = await Lead.create(req.body);
+        const { 
+            businessName, 
+            location, 
+            status, 
+            demoDate, 
+            followupDate, 
+            notes, 
+            contactPhone 
+        } = req.body;
+
+        // 1. Create Lead
+        const newLead = await Lead.create({
+            businessName,
+            location,
+            status,
+            demoDate,
+            followupDate,
+            notes
+        });
+
+        // 2. Automatically create Contact Person entry if Phone Number is provided
+        if (contactPhone && contactPhone.trim() !== "") {
+            await Contact.create({
+                name: businessName, // Uses business name as default contact name
+                phoneno: contactPhone,
+                role: "Primary Contact",
+                lead: newLead._id
+            });
+        }
+
         return res.json({ status: "success", lead: newLead });
     } catch (error) {
         return res.status(500).json({ status: "error", message: error.message });

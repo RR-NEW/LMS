@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-  
     loadAllDashboardData();
     setupFormListeners();
 });
@@ -42,15 +41,12 @@ async function loadAllDashboardData() {
         const services = servicesData.status === "success" ? servicesData.services : [];
         const contacts = contactsData.status === "success" ? contactsData.contacts : [];
 
-      
         updateStatCards(leads, services, contacts);
 
-      
         renderLeadsTable(leads);
         renderServicesTable(services);
         renderContactsTable(contacts);
 
-      
         renderUnifiedTable(leads, services, contacts);
         populateLeadDropdowns(leads);
 
@@ -58,8 +54,6 @@ async function loadAllDashboardData() {
         console.error("Error loading dashboard data:", error);
     }
 }
-
-
 
 function updateStatCards(leads, services, contacts) {
     const totalLeadsElem = document.getElementById("stat-total-leads");
@@ -98,8 +92,6 @@ function populateLeadDropdowns(leads) {
     serviceSelect.innerHTML = optionsHTML;
     contactSelect.innerHTML = optionsHTML;
 }
-
-
 
 function renderUnifiedTable(leads, services, contacts) {
     const tbody = document.querySelector("#unified-table tbody");
@@ -142,7 +134,6 @@ function renderUnifiedTable(leads, services, contacts) {
         tbody.appendChild(tr);
     });
 }
-
 
 function renderLeadsTable(leads) {
     const tbody = document.querySelector("#leads-table tbody");
@@ -221,8 +212,6 @@ function renderContactsTable(contacts) {
     });
 }
 
-
-
 window.updateLeadStatus = async function(id, newStatus) {
     try {
         const res = await fetch(`${API_BASE}/leads/${id}`, {
@@ -276,8 +265,6 @@ window.deleteContact = async function(id) {
     }
 };
 
-
-
 function setupFormListeners() {
     
     const leadForm = document.getElementById("add-lead-form");
@@ -290,7 +277,8 @@ function setupFormListeners() {
                 status: document.getElementById("lead-status").value,
                 demoDate: document.getElementById("lead-demodate").value || null,
                 followupDate: document.getElementById("lead-followdate").value || null,
-                notes: document.getElementById("lead-notes").value
+                notes: document.getElementById("lead-notes").value,
+                contactPhone: document.getElementById("lead-contact-phone") ? document.getElementById("lead-contact-phone").value : ""
             };
 
             try {
@@ -313,7 +301,6 @@ function setupFormListeners() {
         });
     }
 
-    
     const serviceForm = document.getElementById("add-service-form");
     if (serviceForm) {
         serviceForm.addEventListener("submit", async (e) => {
@@ -347,7 +334,6 @@ function setupFormListeners() {
         });
     }
 
-    
     const contactForm = document.getElementById("add-contact-form");
     if (contactForm) {
         contactForm.addEventListener("submit", async (e) => {
@@ -383,30 +369,27 @@ function setupFormListeners() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  if (!themeToggleBtn) return;
-  
-  // 1. Detect saved theme or system preference
-  const savedTheme = localStorage.getItem('theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  let currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-
-  // Apply initial theme
-  document.documentElement.setAttribute('data-theme', currentTheme);
-  updateToggleIcon(currentTheme);
-
-  // 2. Event Listener for Click
-  themeToggleBtn.addEventListener('click', () => {
-    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (!themeToggleBtn) return;
     
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
     document.documentElement.setAttribute('data-theme', currentTheme);
-    localStorage.setItem('theme', currentTheme);
-    
     updateToggleIcon(currentTheme);
-  });
 
-  function updateToggleIcon(theme) {
-    themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-  }
+    themeToggleBtn.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('theme', currentTheme);
+        
+        updateToggleIcon(currentTheme);
+    });
+
+    function updateToggleIcon(theme) {
+        themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
 });
