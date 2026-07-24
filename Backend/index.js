@@ -35,6 +35,46 @@ app.get("/", (req, res) => {
 });
 
 
+// === ADDED: USER REGISTRATION ROUTE ===
+app.post("/api/register", async (req, res) => {
+    try {
+        const { username, password, fullname } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({
+                status: "error",
+                message: "Username and password are required"
+            });
+        }
+
+        const existingUser = await User.findOne({ username: username.trim() });
+        if (existingUser) {
+            return res.status(400).json({
+                status: "error",
+                message: "Username already exists"
+            });
+        }
+
+        const newUser = await User.create({
+            username: username.trim(),
+            passwordHash: password,
+            fullname: fullname || ""
+        });
+
+        return res.status(201).json({
+            status: "success",
+            message: "User registered successfully",
+            user: {
+                username: newUser.username,
+                fullname: newUser.fullname
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({ status: "error", message: error.message });
+    }
+});
+
+
 app.post("/api/login", async (req, res) => {
     try {
         const { username, password } = req.body;
