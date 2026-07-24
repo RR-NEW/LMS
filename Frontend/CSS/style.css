@@ -5,8 +5,7 @@
     --primary: #0f766e;
     --primary-hover: #115e59;
     --success: #047857;
-    --danger:
-        #be123c;
+    --danger: #be123c;
     --warning: #b45309;
     --border: #e5e7eb;
 }
@@ -15,14 +14,12 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial,
-        sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
     background-color: var(--bg-primary);
-    color:
-        var(--text-main);
+    color: var(--text-main);
 }
 
 .login-body {
@@ -44,14 +41,14 @@ body {
 
 .login-card h2 {
     margin-bottom: 0.5rem;
-    color: #111827;
+    color: var(--text-main);
     font-size: 1.9rem;
     text-align: center;
 }
 
 .login-card p {
     margin-bottom: 2rem;
-    color: #6b7280;
+    color: var(--text-muted, #6b7280);
     font-size: 0.9rem;
     text-align: center;
 }
@@ -62,8 +59,7 @@ body {
 
 .form-group-row {
     display: flex;
-    gap:
-        1rem;
+    gap: 1rem;
 }
 
 .form-group-row .form-group {
@@ -75,8 +71,7 @@ label {
     margin-bottom: 0.4rem;
     font-size: 0.85rem;
     font-weight: 600;
-    color:
-        #4b5563;
+    color: var(--text-main);
 }
 
 input,
@@ -87,10 +82,10 @@ textarea {
     border: 1px solid var(--border);
     border-radius: 6px;
     font-size: 0.95rem;
-    color:
-        var(--text-main);
+    color: var(--text-main);
+    background-color: var(--surface);
     outline: none;
-    transition: border 0.2s;
+    transition: border 0.2s, background-color 0.3s ease, color 0.3s ease;
 }
 
 input:focus,
@@ -111,8 +106,7 @@ button {
 .btn-block {
     width: 100%;
     padding: 0.75rem;
-    background-color:
-        var(--primary);
+    background-color: var(--primary);
     color: white;
     font-size: 1rem;
 }

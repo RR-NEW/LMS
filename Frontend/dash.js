@@ -110,14 +110,14 @@ function renderUnifiedTable(leads, services, contacts) {
         const leadServices = services.filter(s => s.lead && s.lead._id === lead._id);
         const leadContacts = contacts.filter(c => c.lead && c.lead._id === lead._id);
 
-        let servicesHTML = '<em style="color:gray;">None</em>';
+        let servicesHTML = '<em style="color:var(--text-muted, gray);">None</em>';
         if (leadServices.length > 0) {
             servicesHTML = `<ul class="list-unstyled">` + 
                 leadServices.map(s => `<li>• <strong>${s.serviceName}</strong> ($${s.price || 0})</li>`).join('') + 
                 `</ul>`;
         }
 
-        let contactsHTML = '<em style="color:gray;">None</em>';
+        let contactsHTML = '<em style="color:var(--text-muted, gray);">None</em>';
         if (leadContacts.length > 0) {
             contactsHTML = `<ul class="list-unstyled">` + 
                 leadContacts.map(c => `<li>• <strong>${c.name}</strong> (${c.role || 'Contact'})<br>&nbsp;&nbsp;📞 ${c.phoneno}</li>`).join('') + 
@@ -382,6 +382,31 @@ function setupFormListeners() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  if (!themeToggleBtn) return;
+  
+  // 1. Detect saved theme or system preference
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  let currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
 
+  // Apply initial theme
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  updateToggleIcon(currentTheme);
 
+  // 2. Event Listener for Click
+  themeToggleBtn.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    localStorage.setItem('theme', currentTheme);
+    
+    updateToggleIcon(currentTheme);
+  });
 
+  function updateToggleIcon(theme) {
+    themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+});

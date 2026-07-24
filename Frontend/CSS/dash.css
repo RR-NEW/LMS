@@ -15,8 +15,8 @@ body {
 }
 
 .navbar {
-    background-color: var(--primary);
-    color: white;
+    background-color: var(--nav-bg, var(--primary));
+    color: var(--nav-text, white);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -42,7 +42,6 @@ body {
     flex-direction: column;
     gap: 1.5rem;
 }
-
 
 .stats-grid {
     display: grid;
@@ -77,10 +76,9 @@ body {
 .stat-info p {
     margin: 0;
     font-size: 0.85rem;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     font-weight: 600;
 }
-
 
 .two-column-layout {
     display: grid;
@@ -106,7 +104,6 @@ body {
     top: 1rem;
 }
 
-
 .card-section {
     background: var(--surface);
     padding: 1.25rem;
@@ -127,48 +124,53 @@ body {
 
 .section-desc {
     font-size: 0.85rem;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
     margin-top: -0.5rem;
     margin-bottom: 1rem;
 }
 
-
 .entry-form {
-    background: #f1f5f9;
+    background: var(--entry-form-bg, #f1f5f9);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.25rem;
+    border: 1px solid var(--border);
 }
 
 .entry-form h4 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    color: #334155;
+    color: var(--entry-form-text, #334155);
     font-size: 0.95rem;
 }
 
+/* --- UPDATED FORM GRID & INPUT SPACING --- */
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.85rem;
+    align-items: flex-end;
+    margin-bottom: 1rem;
 }
 
 .form-grid label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
     display: block;
-    margin-bottom: 2px;
-    color: #64748b;
+    margin-bottom: 4px;
+    color: var(--text-muted, #64748b);
 }
 
 input, select {
     width: 100%;
-    padding: 0.45rem;
+    padding: 0.55rem 0.75rem;
     border: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--text-main);
     border-radius: 6px;
     font-size: 0.85rem;
     outline: none;
+    box-sizing: border-box;
 }
 
 .btn-save {
@@ -186,7 +188,6 @@ input, select {
     background-color: var(--primary-hover);
 }
 
-
 .table-responsive {
     overflow-x: auto;
 }
@@ -202,24 +203,31 @@ th, td {
     text-align: left;
     border-bottom: 1px solid var(--border);
     font-size: 0.825rem;
+    color: var(--text-main);
 }
 
 th {
-    background-color: #f8fafc;
-    color: #475569;
+    background-color: var(--table-header-bg, #f8fafc);
+    color: var(--text-muted, #475569);
     font-weight: 600;
 }
 
+/* --- UPDATED TABLE DROPDOWN STYLING --- */
 .status-select {
-    padding: 0.25rem;
-    border-radius: 4px;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
     font-size: 0.8rem;
+    background-color: var(--surface);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    min-width: 130px;
+    cursor: pointer;
 }
 
 .id-badge {
     font-family: monospace;
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--text-muted, #64748b);
 }
 
 .btn-delete {
@@ -246,7 +254,88 @@ th {
 
 .list-unstyled li {
     padding: 0.15rem 0;
-    border-bottom: 1px dashed #f1f5f9;
+    border-bottom: 1px dashed var(--border, #f1f5f9);
 }
 
+/* Color Palette Variables */
+:root {
+  --bg-color: #f4f6f9;
+  --bg-primary: #f4f6f9;
+  --surface: #ffffff;
+  --card-bg: #ffffff;
+  --text-main: #1f2937;
+  --text-color: #333333;
+  --text-muted: #666666;
+  --border: #e0e0e0;
+  --border-color: #e0e0e0;
+  --nav-bg: #ffffff;
+  --nav-text: #0f172a;
+  --table-header-bg: #f8f9fa;
+  --btn-toggle-bg: #e2e8f0;
+  --entry-form-bg: #f1f5f9;
+  --entry-form-text: #334155;
+}
 
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --bg-primary: #121212;
+  --surface: #1e1e1e;
+  --card-bg: #1e1e1e;
+  --text-main: #e0e0e0;
+  --text-color: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --border: #333333;
+  --border-color: #333333;
+  --nav-bg: #181818;
+  --nav-text: #ffffff;
+  --table-header-bg: #2a2a2a;
+  --btn-toggle-bg: #333333;
+  --entry-form-bg: #282828;
+  --entry-form-text: #e0e0e0;
+}
+
+/* Base element application */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar {
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stat-card, 
+.card-section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+table th {
+  background-color: var(--table-header-bg);
+  color: var(--text-color);
+}
+
+/* Toggle Button Styling */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-theme-toggle {
+  background-color: var(--btn-toggle-bg);
+  border: 1px solid var(--border-color);
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-theme-toggle:hover {
+  transform: scale(1.05);
+}

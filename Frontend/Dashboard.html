@@ -5,19 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Management Dashboard</title>
     <link rel="stylesheet" href="CSS/dash.css">
+    
+    <!-- Script to prevent Flash of Unstyled Content (FOUC) on load -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
 </head>
 <body>
     <nav class="navbar">
         <h2>LMS Dashboard</h2>
         <div class="user-controls">
             <span id="welcome-message"></span>
+            <!-- Added Dark/Light Mode Toggle Button -->
+            <button id="theme-toggle" class="btn-theme-toggle" aria-label="Toggle Theme">🌙</button>
             <button id="logout-btn" class="btn-logout">Logout</button>
         </div>
     </nav>
 
     <main class="dashboard-container">
 
-        
+        <!-- Stats Overview -->
         <section class="stats-grid">
             <div class="stat-card">
                 <span class="stat-icon">📊</span>
@@ -56,13 +68,13 @@
             </div>
         </section>
 
-      
+        <!-- Main Dashboard Content -->
         <div class="two-column-layout">
 
-          
+            <!-- LEFT COLUMN -->
             <div class="left-column">
 
-                
+                <!-- Lead Management -->
                 <section class="card-section">
                     <div class="section-header">
                         <h3> Lead Management</h3>
@@ -81,12 +93,12 @@
                                 <option value="Won">Won</option>
                                 <option value="Lost">Lost</option>
                             </select>
-                            <div>
-                                <label>Demo Date</label>
+                            <div class="form-group">
+                                <label for="lead-demodate">Demo Date</label>
                                 <input type="date" id="lead-demodate">
                             </div>
-                            <div>
-                                <label>Follow-up Date</label>
+                            <div class="form-group">
+                                <label for="lead-followdate">Follow-up Date</label>
                                 <input type="date" id="lead-followdate">
                             </div>
                             <input type="text" id="lead-notes" placeholder="Notes / Remarks">
@@ -113,7 +125,7 @@
                     </div>
                 </section>
 
-                
+                <!-- Services Provided -->
                 <section class="card-section">
                     <div class="section-header">
                         <h3> Services Provided</h3>
@@ -149,7 +161,7 @@
                     </div>
                 </section>
 
-                
+                <!-- Contact Persons -->
                 <section class="card-section">
                     <div class="section-header">
                         <h3> Contact Persons</h3>
