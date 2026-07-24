@@ -1,9 +1,43 @@
 const API_BASE = "http://localhost:1001/api";
 
+// === AUTHENTICATED FETCH HELPER ===
+async function apiFetch(endpoint, options = {}) {
+    const token = localStorage.getItem("lms_token");
+
+    if (!token) {
+        localStorage.removeItem("lms_token");
+        localStorage.removeItem("lms_user");
+        window.location.href = "login.html";
+        return null;
+    }
+
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        ...(options.headers || {})
+    };
+
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+        ...options,
+        headers
+    });
+
+    if (response.status === 401) {
+        alert("Session expired or unauthorized. Please log in again.");
+        localStorage.removeItem("lms_token");
+        localStorage.removeItem("lms_user");
+        window.location.href = "login.html";
+        return null;
+    }
+
+    return response;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    
-    const user = JSON.parse(localStorage.getItem("lms_user"));
-    if (!user) {
+    const user = JSON.parse(localStorage.getItem("lms_user") || "null");
+    const token = localStorage.getItem("lms_token");
+
+    if (!user || !token) {
         window.location.href = "login.html";
         return;
     }
@@ -16,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("lms_token");
             localStorage.removeItem("lms_user");
             window.location.href = "login.html";
         });
@@ -28,10 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadAllDashboardData() {
     try {
         const [leadsRes, servicesRes, contactsRes] = await Promise.all([
-            fetch(`${API_BASE}/leads`),
-            fetch(`${API_BASE}/services`),
-            fetch(`${API_BASE}/contacts`)
+            apiFetch("/leads"),
+            apiFetch("/services"),
+            apiFetch("/contacts")
         ]);
+
+        if (!leadsRes || !servicesRes || !contactsRes) return;
 
         const leadsData = await leadsRes.json();
         const servicesData = await servicesRes.json();
@@ -99,8 +136,8 @@ function renderUnifiedTable(leads, services, contacts) {
     tbody.innerHTML = "";
 
     leads.forEach(lead => {
-        const leadServices = services.filter(s => s.lead && s.lead._id === lead._id);
-        const leadContacts = contacts.filter(c => c.lead && c.lead._id === lead._id);
+        const leadServices = services.filter(s => s.lead && (s.lead._id === lead._id || s.lead === lead._id));
+        const leadContacts = contacts.filter(c => c.lead && (c.lead._id === lead._id || c.lead === lead._id));
 
         let servicesHTML = '<em style="color:var(--text-muted, gray);">None</em>';
         if (leadServices.length > 0) {
@@ -214,14 +251,13 @@ function renderContactsTable(contacts) {
 
 window.updateLeadStatus = async function(id, newStatus) {
     try {
-        const res = await fetch(`${API_BASE}/leads/${id}`, {
+        const res = await apiFetch(`/leads/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })
         });
-        if (res.ok) {
+        if (res && res.ok) {
             loadAllDashboardData();
-        } else {
+        } else if (res) {
             alert("Failed to update status");
         }
     } catch (error) {
@@ -233,9 +269,9 @@ window.deleteLead = async function(id) {
     if (!confirm("Are you sure you want to delete this lead? Linked services and contacts will also be removed.")) return;
     
     try {
-        const res = await fetch(`${API_BASE}/leads/${id}`, { method: 'DELETE' });
-        if (res.ok) loadAllDashboardData();
-        else alert("Failed to delete lead");
+        const res = await apiFetch(`/leads/${id}`, { method: 'DELETE' });
+        if (res && res.ok) loadAllDashboardData();
+        else if (res) alert("Failed to delete lead");
     } catch (error) {
         alert("Failed to delete lead: Connection error");
     }
@@ -245,9 +281,9 @@ window.deleteService = async function(id) {
     if (!confirm("Are you sure you want to delete this service?")) return;
 
     try {
-        const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE' });
-        if (res.ok) loadAllDashboardData();
-        else alert("Failed to delete service");
+        const res = await apiFetch(`/services/${id}`, { method: 'DELETE' });
+        if (res && res.ok) loadAllDashboardData();
+        else if (res) alert("Failed to delete service");
     } catch (error) {
         alert("Failed to delete service: Connection error");
     }
@@ -257,9 +293,9 @@ window.deleteContact = async function(id) {
     if (!confirm("Are you sure you want to delete this contact person?")) return;
 
     try {
-        const res = await fetch(`${API_BASE}/contacts/${id}`, { method: 'DELETE' });
-        if (res.ok) loadAllDashboardData();
-        else alert("Failed to delete contact");
+        const res = await apiFetch(`/contacts/${id}`, { method: 'DELETE' });
+        if (res && res.ok) loadAllDashboardData();
+        else if (res) alert("Failed to delete contact");
     } catch (error) {
         alert("Failed to delete contact: Connection error");
     }
@@ -282,11 +318,12 @@ function setupFormListeners() {
             };
 
             try {
-                const res = await fetch(`${API_BASE}/leads`, {
+                const res = await apiFetch(`/leads`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
+                if (!res) return;
+
                 const data = await res.json();
 
                 if (data.status === "success") {
@@ -315,11 +352,12 @@ function setupFormListeners() {
             };
 
             try {
-                const res = await fetch(`${API_BASE}/services`, {
+                const res = await apiFetch(`/services`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
+                if (!res) return;
+
                 const data = await res.json();
 
                 if (data.status === "success") {
@@ -348,11 +386,12 @@ function setupFormListeners() {
             };
 
             try {
-                const res = await fetch(`${API_BASE}/contacts`, {
+                const res = await apiFetch(`/contacts`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
+                if (!res) return;
+
                 const data = await res.json();
 
                 if (data.status === "success") {
